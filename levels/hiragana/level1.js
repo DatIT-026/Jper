@@ -40,6 +40,12 @@
 
     const playCurrentSound = () => {
         if (currentQuestion < totalQuestions) {
+            // Stop the previous sound if it exists
+            if (currentSound) {
+                currentSound.pause();
+                currentSound.currentTime = 0; // Reset the audio to the beginning
+            }
+
             console.log('Attempting to play sound:', questions[currentQuestion].sound);
             currentSound = new Audio(questions[currentQuestion].sound);
             currentSound.play().catch(err => {
@@ -49,6 +55,11 @@
     }
 
     const returnToLevels = () => {
+        // Stop the sound when returning to levels
+        if (currentSound) {
+            currentSound.pause();
+            currentSound.currentTime = 0;
+        }
         document.getElementById('game-section').style.display = 'none';
         document.getElementById('levels-section').style.display = 'block';
         showLevels('hiragana');
@@ -62,10 +73,10 @@
 
             if (currentQuestion === totalQuestions) {
                 setTimeout(() => {
-                    alert('Congratulations! You finished the Level 1');
+                    alert('Correct!');
                     unlockLevel('hiragana', 2);
                     returnToLevels();
-                }, 100);
+                }, 500);
             } else {
                 playCurrentSound();
             }

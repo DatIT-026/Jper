@@ -77,7 +77,7 @@
                     alert('Correct!');
                     unlockLevel('hiragana', 4);
                     returnToLevels();
-                }, 500);
+                }, 50);
             } else {
                 playCurrentSound();
             }

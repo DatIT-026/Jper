@@ -1,16 +1,16 @@
 (function () {
     // Game data
     const hiraganaVocals = [
-        { letter: 'さ', sound: '/levels/sounds/vocals/3/sa.mp3', reading: 'sa' },
-        { letter: 'し', sound: '/levels/sounds/vocals/3/shi.mp3', reading: 'shi' },
-        { letter: 'す', sound: '/levels/sounds/vocals/3/su.mp3', reading: 'su' },
-        { letter: 'せ', sound: '/levels/sounds/vocals/3/se.mp3', reading: 'se' },
-        { letter: 'そ', sound: '/levels/sounds/vocals/3/so.mp3', reading: 'so' },
-        { letter: 'ざ', sound: '/levels/sounds/vocals/3/za.mp3', reading: 'za' },
-        { letter: 'じ', sound: '/levels/sounds/vocals/3/ji.mp3', reading: 'ji' },
-        { letter: 'ず', sound: '/levels/sounds/vocals/3/zu.mp3', reading: 'zu' },
-        { letter: 'ぜ', sound: '/levels/sounds/vocals/3/ze.mp3', reading: 'ze' },
-        { letter: 'ぞ', sound: '/levels/sounds/vocals/3/zo.mp3', reading: 'zo' }
+        { letter: 'さ', sound: 'https://datit-026.github.io/Jper/levels/sounds/vocals/3/sa.mp3', reading: 'sa' },
+        { letter: 'し', sound: 'https://datit-026.github.io/Jper/levels/sounds/vocals/3/shi.mp3', reading: 'shi' },
+        { letter: 'す', sound: 'https://datit-026.github.io/Jper/levels/sounds/vocals/3/su.mp3', reading: 'su' },
+        { letter: 'せ', sound: 'https://datit-026.github.io/Jper/levels/sounds/vocals/3/se.mp3', reading: 'se' },
+        { letter: 'そ', sound: 'https://datit-026.github.io/Jper/levels/sounds/vocals/3/so.mp3', reading: 'so' },
+        { letter: 'ざ', sound: 'https://datit-026.github.io/Jper/levels/sounds/vocals/3/za.mp3', reading: 'za' },
+        { letter: 'じ', sound: 'https://datit-026.github.io/Jper/levels/sounds/vocals/3/ji.mp3', reading: 'ji' },
+        { letter: 'ず', sound: 'https://datit-026.github.io/Jper/levels/sounds/vocals/3/zu.mp3', reading: 'zu' },
+        { letter: 'ぜ', sound: 'https://datit-026.github.io/Jper/levels/sounds/vocals/3/ze.mp3', reading: 'ze' },
+        { letter: 'ぞ', sound: 'https://datit-026.github.io/Jper/levels/sounds/vocals/3/zo.mp3', reading: 'zo' }
     ];
 
     let currentQuestion = 0;

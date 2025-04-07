@@ -1,11 +1,11 @@
 (function () {
     // Game data
     const hiraganaVocals = [
-        { letter: 'あ', sound: '/levels/sounds/vocals/1/a.mp3', reading: 'a' },
-        { letter: 'い', sound: '/levels/sounds/vocals/1/i.mp3', reading: 'i' },
-        { letter: 'う', sound: '/levels/sounds/vocals/1/u.mp3', reading: 'u' },
-        { letter: 'え', sound: '/levels/sounds/vocals/1/e.mp3', reading: 'e' },
-        { letter: 'お', sound: '/levels/sounds/vocals/1/o.mp3', reading: 'o' }
+        { letter: 'あ', sound: 'https://datit-026.github.io/Jper/levels/sounds/vocals/1/a.mp3', reading: 'a' },
+        { letter: 'い', sound: 'https://datit-026.github.io/Jper/levels/sounds/vocals/1/i.mp3', reading: 'i' },
+        { letter: 'う', sound: 'https://datit-026.github.io/Jper/levels/sounds/vocals/1/u.mp3', reading: 'u' },
+        { letter: 'え', sound: 'https://datit-026.github.io/Jper/levels/sounds/vocals/1/e.mp3', reading: 'e' },
+        { letter: 'お', sound: 'https://datit-026.github.io/Jper/levels/sounds/vocals/1/o.mp3', reading: 'o' }
     ];
 
     let currentQuestion = 0;

@@ -1,0 +1,136 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+    text-align: center;
+}
+
+.dashboard-box, .form-box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+h2, h3 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+p {
+    margin-bottom: 20px;
+    color: #555;
+}
+
+.menu {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.menu button, .levels-list button, .game-buttons button, button {
+    padding: 12px 24px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    background-color: #007bff;
+    color: white;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+.menu button:hover, .levels-list button:hover, .game-buttons button:hover, button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+.levels-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.levels-list button {
+    width: 120px;
+}
+
+.levels-list button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+/* Game Section */
+#game-section {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Game Buttons (Desktop: Rows, Mobile: Columns) */
+.game-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.game-buttons button {
+    width: 70px;
+    height: 70px;
+    font-size: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    border-radius: 10px;
+    background-color: #1e90ff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Desktop: Max 5 buttons per row */
+@media (min-width: 768px) {
+    .game-buttons {
+        flex-direction: row;
+        max-width: 400px; /* 5 buttons * (70px + 15px gap) - 15px for last gap */
+        margin: 0 auto;
+    }
+    .game-buttons button {
+        flex: 0 0 calc(20% - 12px); /* 5 buttons per row, adjusted for gap */
+        max-width: 70px;
+    }
+}
+
+/* Mobile: Max 5 buttons per column, 2 columns for 10 buttons */
+@media (max-width: 767px) {
+    .game-buttons {
+        display: grid;
+        grid-template-columns: repeat(2, 70px);
+        grid-template-rows: repeat(5, 70px);
+        gap: 20px;
+        justify-content: center;
+    }
+    .game-buttons button {
+        width: 70px;
+        height: 70px;
+    }
+}

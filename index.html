@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jper - Japanese Vocabulary Game</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Dashboard -->
+        <div id="dashboard" class="dashboard-box" style="display: block;">
+            <h2>Welcome to Jper<span id="username-display"></span>!</h2>
+            <p>A Japanese Game for kid</p>
+            <div class="menu">
+                <button onclick="showLevels('hiragana')">Hiragana</button>
+                <button onclick="showLevels('katakana')">Katakana</button>
+                <button onclick="showLevels('boss')">Boss Fight</button>
+            </div>
+
+            <!-- Levels Section -->
+            <div id="levels-section" style="display: none;">
+                <h3 id="mode-title"></h3>
+                <div id="levels-list" class="levels-list"></div>
+                <button onclick="backToMenu()">Back to Menu</button>
+            </div>
+
+            <!-- Game Section -->
+            <div id="game-section" style="display: none;">
+                <h3 id="game-title"></h3>
+                <p>Question <span id="game-question">0</span>/<span id="total-questions">5</span></p>
+                <div id="game-buttons" class="game-buttons"></div>
+            </div>
+        </div>
+    </div>
+    <script src="js/script.js"></script>
+    <script src="levels/hiragana/level1.js"></script>
+    <script src="levels/hiragana/level2.js"></script>
+    <script src="levels/hiragana/level3.js"></script>
+</body>
+</html>

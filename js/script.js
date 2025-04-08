@@ -97,7 +97,7 @@ const startLevel = (mode, level) => {
         } else if (level === 8) {
             startKatakanaLevel8();
         } else if (level === 9) {
-            startHiraganaLevel9();
+            startKatakanaLevel9();
         }
     } else {
         alert(`Starting ${mode} Level ${level}! (Feature coming soon)`);

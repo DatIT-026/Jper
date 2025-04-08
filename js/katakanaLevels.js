@@ -40,8 +40,8 @@
             { letter: 'テ', sound: 'https://datit-026.github.io/Jper/sounds/vocals/4/te.mp3', reading: 'te' },
             { letter: 'ト', sound: 'https://datit-026.github.io/Jper/sounds/vocals/4/to.mp3', reading: 'to' },
             { letter: 'ダ', sound: 'https://datit-026.github.io/Jper/sounds/vocals/4/da.mp3', reading: 'da' },
-            { letter: 'ヂ', sound: 'https://datit-026.github.io/Jper/sounds/vocals/4/ji.mp3', reading: 'ji' },
-            { letter: 'ヅ', sound: 'https://datit-026.github.io/Jper/sounds/vocals/4/zu.mp3', reading: 'zu' },
+            { letter: 'ヂ', sound: 'https://datit-026.github.io/Jper/sounds/vocals/4/gi.mp3', reading: 'gi' },
+            { letter: 'ヅ', sound: 'https://datit-026.github.io/Jper/sounds/vocals/4/giu.mp3', reading: 'giu' },
             { letter: 'デ', sound: 'https://datit-026.github.io/Jper/sounds/vocals/4/de.mp3', reading: 'de' },
             { letter: 'ド', sound: 'https://datit-026.github.io/Jper/sounds/vocals/4/do.mp3', reading: 'do' }
         ],
@@ -182,7 +182,7 @@
 
             if (currentQuestion === totalQuestions) {
                 setTimeout(() => {
-                    alert('Correct!');
+                    alert('Congratulation! You did it 👏');
                     unlockLevel('katakana', level + 1);
                     returnToLevels();
                 }, 50);
@@ -191,7 +191,7 @@
                 updateRomajiDisplay();
             }
         } else {
-            alert(`Failed! The correct answer was ${questions[currentQuestion].letter} (${correctReading}).`);
+            alert(`Wrong! The correct answer was ${questions[currentQuestion].letter} (${correctReading}).`);
             returnToLevels();
         }
     };

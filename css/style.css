@@ -5,7 +5,9 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: "Noto Sans JP",sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     background-color: #f0f0f0;
     display: flex;
     justify-content: center;
@@ -77,7 +79,6 @@ p {
     cursor: not-allowed;
 }
 
-/* Game Section */
 #game-section {
     background: white;
     padding: 30px;
@@ -86,7 +87,7 @@ p {
 }
 
 #game-title {
-    font-size: 1.5em;
+    font-size: 1.2em;
     color: #333;
     margin-bottom: 10px;
 }
@@ -104,34 +105,37 @@ p {
 }
 
 #current-romaji {
-    font-size: 1.5em;
+    font-size: 20px;
     color: #333;
     margin: 10px 0;
-    font-weight: bold;
 }
 
 #replay-button {
-    padding: 8px 16px;
+    padding: 10px 20px;
     font-size: 0.9em;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
+    background-color: #ff6f61;
+    color: #fff;
+    border: 2px solid #ff6f61;
+    border-radius: 20px;
     cursor: pointer;
     margin-bottom: 15px;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 #replay-button:hover {
-    background-color: #0056b3;
+    background-color: #fff;
+    color: #0056b3;
+    border-color: #ff6f61;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    transform: scale(1.05);
 }
 
 #replay-button:focus {
     outline: none;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
-/* Game Buttons (Desktop: Rows, Mobile: Grid) */
 .game-buttons {
     display: flex;
     flex-wrap: wrap;
@@ -153,54 +157,56 @@ p {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-/* Desktop: Max 5 buttons per row */
 @media (min-width: 768px) {
     .game-buttons {
         flex-direction: row;
-        max-width: 400px; /* 5 buttons * (70px + 15px gap) - 15px for last gap */
+        max-width: 400px;
         margin: 0 auto;
     }
     .game-buttons button {
-        flex: 0 0 calc(20% - 12px); /* 5 buttons per row, adjusted for gap */
+        flex: 0 0 calc(20% - 12px);
         max-width: 70px;
     }
 }
 
-/* Mobile: Stack menu, levels, and game buttons in a grid for smaller screens */
 @media (max-width: 767px) {
     .menu {
         flex-direction: column;
         align-items: center;
         gap: 10px;
     }
-
     .menu button {
         width: 100%;
         max-width: 200px;
         padding: 12px;
     }
-
     .levels-list {
-        flex-direction: column; /* Stack level buttons in a column */
+        flex-direction: column;
         align-items: center;
         gap: 10px;
     }
-
     .levels-list button {
         width: 100%;
         max-width: 200px;
     }
-
     .game-buttons {
-        display: grid; /* Use grid layout for 2 columns, 5 rows */
-        grid-template-columns: repeat(2, 70px); /* 2 columns of 70px each */
-        grid-template-rows: repeat(5, 70px); /* 5 rows of 70px each */
+        display: grid;
+        grid-template-columns: repeat(2, 70px);
+        grid-template-rows: repeat(5, 70px);
         gap: 15px;
         justify-content: center;
     }
-
     .game-buttons button {
         width: 70px;
         height: 70px;
+    }
+    #game-title {
+        font-size: 1.2em;
+    }
+    #current-vocab {
+        font-size: 1em;
+    }
+    #current-romaji {
+        font-size: 1.1em;
     }
 }

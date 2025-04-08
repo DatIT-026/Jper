@@ -68,6 +68,10 @@ p {
     justify-content: center;
     gap: 15px;
     margin-bottom: 20px;
+    width: 100%;
+    max-width: 700px; /* Fits 5 buttons in a row */
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .levels-list button {

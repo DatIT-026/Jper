@@ -40,8 +40,8 @@
             { letter: 'て', sound: 'https://datit-026.github.io/Jper/sounds/vocals/4/te.mp3', reading: 'te' },
             { letter: 'と', sound: 'https://datit-026.github.io/Jper/sounds/vocals/4/to.mp3', reading: 'to' },
             { letter: 'だ', sound: 'https://datit-026.github.io/Jper/sounds/vocals/4/da.mp3', reading: 'da' },
-            { letter: 'ぢ', sound: 'https://datit-026.github.io/Jper/sounds/vocals/4/gi.mp3', reading: 'gi' },
-            { letter: 'づ', sound: 'https://datit-026.github.io/Jper/sounds/vocals/4/giu.mp3', reading: 'giu' },
+            { letter: 'ぢ', sound: 'https://datit-026.github.io/Jper/sounds/vocals/4/dzi.mp3', reading: 'dzi' },
+            { letter: 'づ', sound: 'https://datit-026.github.io/Jper/sounds/vocals/4/dzu.mp3', reading: 'dzu' },
             { letter: 'で', sound: 'https://datit-026.github.io/Jper/sounds/vocals/4/de.mp3', reading: 'de' },
             { letter: 'ど', sound: 'https://datit-026.github.io/Jper/sounds/vocals/4/do.mp3', reading: 'do' }
         ],

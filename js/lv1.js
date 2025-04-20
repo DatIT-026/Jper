@@ -1,13 +1,52 @@
-const hiraganaSet = ['あ', 'い', 'う', 'え', 'お', 'か', 'き', 'く', 'け', 'こ', 'さ', 'し', 'す', 'せ', 'そ'];
-const katakanaSet = ['ア', 'イ', 'ウ', 'エ', 'オ', 'カ', 'キ', 'ク', 'ケ', 'コ', 'サ', 'シ', 'ス', 'セ', 'ソ'];
+const hiraganaSet = [
+    'あ', 'い', 'う', 'え', 'お', 
+    'か', 'き', 'く', 'け', 'こ', 
+    'さ', 'し', 'す', 'せ', 'そ',
+    'た', 'ち', 'つ', 'て', 'と',
+    'な', 'に', 'ぬ', 'ね', 'の',
+    'は', 'ひ', 'ふ', 'へ', 'ほ',
+    'ま', 'み', 'む', 'め', 'も',
+    'や', 'ゆ', 'よ',
+    'ら', 'り', 'る', 'れ', 'ろ',
+    'わ', 'を', 'ん'
+];
+
+const katakanaSet = [
+    'ア', 'イ', 'ウ', 'エ', 'オ', 
+    'カ', 'キ', 'ク', 'ケ', 'コ', 
+    'サ', 'シ', 'ス', 'セ', 'ソ',
+    'タ', 'チ', 'ツ', 'テ', 'ト',
+    'ナ', 'ニ', 'ヌ', 'ネ', 'ノ',
+    'ハ', 'ヒ', 'フ', 'ヘ', 'ホ',
+    'マ', 'ミ', 'ム', 'メ', 'モ',
+    'ヤ', 'ユ', 'ヨ',
+    'ラ', 'リ', 'ル', 'レ', 'ロ',
+    'ワ', 'ヲ', 'ン'
+];
+
 const combinedSet = [...hiraganaSet, ...katakanaSet];
 const romajiMap = {
     'あ': 'a', 'い': 'i', 'う': 'u', 'え': 'e', 'お': 'o',
     'か': 'ka', 'き': 'ki', 'く': 'ku', 'け': 'ke', 'こ': 'ko',
     'さ': 'sa', 'し': 'shi', 'す': 'su', 'せ': 'se', 'そ': 'so',
+    'た': 'ta', 'ち': 'chi', 'つ': 'tsu', 'て': 'te', 'と': 'to',
+    'な': 'na', 'に': 'ni', 'ぬ': 'nu', 'ね': 'ne', 'の': 'no',
+    'は': 'ha', 'ひ': 'hi', 'ふ': 'fu', 'へ': 'he', 'ほ': 'ho',
+    'ま': 'ma', 'み': 'mi', 'む': 'mu', 'め': 'me', 'も': 'mo',
+    'や': 'ya', 'ゆ': 'yu', 'よ': 'yo',
+    'ら': 'ra', 'り': 'ri', 'る': 'ru', 'れ': 're', 'ろ': 'ro',
+    'わ': 'wa', 'を': 'wo', 'ん': 'n',
+
     'ア': 'a', 'イ': 'i', 'ウ': 'u', 'エ': 'e', 'オ': 'o',
     'カ': 'ka', 'キ': 'ki', 'ク': 'ku', 'ケ': 'ke', 'コ': 'ko',
-    'サ': 'sa', 'シ': 'shi', 'ス': 'su', 'セ': 'se', 'ソ': 'so'
+    'サ': 'sa', 'シ': 'shi', 'ス': 'su', 'セ': 'se', 'ソ': 'so',
+    'タ': 'ta', 'チ': 'chi', 'ツ': 'tsu', 'テ': 'te', 'ト': 'to',
+    'ナ': 'na', 'ニ': 'ni', 'ヌ': 'nu', 'ネ': 'ne', 'ノ': 'no',
+    'ハ': 'ha', 'ヒ': 'hi', 'フ': 'fu', 'ヘ': 'he', 'ホ': 'ho',
+    'マ': 'ma', 'ミ': 'mi', 'ム': 'mu', 'メ': 'me', 'モ': 'mo',
+    'ヤ': 'ya', 'ユ': 'yu', 'ヨ': 'yo',
+    'ラ': 'ra', 'リ': 'ri', 'ル': 'ru', 'レ': 're', 'ロ': 'ro',
+    'ワ': 'wa', 'ヲ': 'wo', 'ン': 'n'
 };
 let sequence = [];
 let playerSequence = [];
@@ -18,7 +57,7 @@ let currentTurn = 0;
 let isPlayerTurn = false;
 let usedRomaji = new Set(); // Tracking used romaji to avoid hiragana/katakana duplication
 let gameTimer = null;
-let timeRemaining = 120; // 120 seconds timer for level 1
+let timeRemaining = 90; // 90 seconds timer for level 1
 let timerDisplay = null;
 let backgroundMusicTimer = null;
 let backgroundMusic = null;
@@ -34,7 +73,7 @@ let backgroundMusic = null;
         }
         
         // Create new audio instance
-        backgroundMusic = new Audio('sounds/tracks/ppl2ost.mp3');
+        backgroundMusic = new Audio('https://datit-026.github.io/Jper/sounds/tracks/ppl2ost.mp3');
         backgroundMusic.volume = 0.3;
         
         // Clear any existing timer
@@ -166,7 +205,7 @@ function startTimer() {
     }
     
     // Reset time
-    timeRemaining = 120;
+    timeRemaining = 90;
     const totalTime = timeRemaining;
     
     // Get references to timer elements
@@ -232,18 +271,18 @@ function showFailedPopup(message) {
     
     // Create message
     const popupTitle = document.createElement('h2');
-    popupTitle.textContent = 'You Failed!';
+    popupTitle.textContent = 'You Failed! Practice more';
     popupTitle.style.color = '#dc3545';
     popupTitle.style.marginBottom = '15px';
     
     const popupMessage = document.createElement('p');
-    popupMessage.textContent = message || 'Try again to complete the level!';
+    popupMessage.textContent = message || 'Back to menu!';
     popupMessage.style.fontSize = '18px';
     popupMessage.style.marginBottom = '25px';
     
     // Create back to levels button
     const backButton = document.createElement('button');
-    backButton.textContent = 'Return to Level Selection';
+    backButton.textContent = 'Back to menu';
     backButton.style.padding = '12px 24px';
     backButton.style.fontSize = '16px';
     backButton.style.backgroundColor = '#007bff';
@@ -308,7 +347,7 @@ function showCongratulationsPopup() {
     popupTitle.style.marginBottom = '15px';
     
     const popupMessage = document.createElement('p');
-    popupMessage.textContent = 'You have successfully completed Boss Level 1!';
+    popupMessage.textContent = 'Wow! You did it!';
     popupMessage.style.fontSize = '18px';
     popupMessage.style.marginBottom = '25px';
     
@@ -412,7 +451,7 @@ function playSequence() {
     const sequenceToPlay = sequence.slice(0, currentTurn + 1); // Only play up to current turn + 1
     
     // Set the delay between characters - faster in the final round
-    const delay = currentRound === 3 ? 900 : 1000; // 10% faster in the final round
+const delay = currentRound === 3 ? 500 : 1000; // Making round 3 twice as fast (x1)
     
     document.getElementById('current-vocab').firstElementChild.textContent = '';
     const displayInterval = setInterval(() => {
@@ -433,29 +472,29 @@ function playSequence() {
 
 function playSound(character) {
     const romaji = romajiMap[character];
-    const audio = new Audio(`sounds/vocals/special/${romaji}.mp3`);
+    const audio = new Audio(`https://datit-026.github.io/Jper/sounds/vocals/special/${romaji}.mp3`);
     audio.play().catch(err => console.log(err));
 }
 
 function playRoundSound() {
-    const audio = new Audio(`sounds/tracks/round${currentRound}.mp3`);
+    const audio = new Audio(`https://datit-026.github.io/Jper/sounds/tracks/round${currentRound}.mp3`);
     audio.play().catch(err => console.log(err));
 }
 
 function playCorrectSound() {
-    const audio = new Audio(`sounds/tracks/correctpattern.mp3`);
+    const audio = new Audio(`https://datit-026.github.io/Jper/sounds/tracks/correctpattern.mp3`);
     audio.play().catch(err => console.log(err));
 }
 
 function playWrongSound() {
-    const audio = new Audio(`sounds/tracks/wrongpattern.mp3`);
+    const audio = new Audio(`https://datit-026.github.io/Jper/sounds/tracks/wrongpattern.mp3`);
     audio.play().catch(err => console.log(err));
 }
 
 // Modified to play both win.mp3 and correctpattern.mp3
 function playWinSound() {
-    const correctAudio = new Audio(`sounds/tracks/correctpattern.mp3`);
-    const winAudio = new Audio(`sounds/tracks/win.mp3`);
+    const correctAudio = new Audio(`https://datit-026.github.io/Jper/sounds/tracks/correctpattern.mp3`);
+    const winAudio = new Audio(`https://datit-026.github.io/Jper/sounds/tracks/win.mp3`);
     
     correctAudio.play().catch(err => console.log(err));
     setTimeout(() => {
@@ -465,8 +504,8 @@ function playWinSound() {
 
 // New function to play both sounds at round completion
 function playRoundCompleteSound() {
-    const correctAudio = new Audio(`sounds/tracks/correctpattern.mp3`);
-    const winAudio = new Audio(`sounds/tracks/win.mp3`);
+    const correctAudio = new Audio(`https://datit-026.github.io/Jper/sounds/tracks/correctpattern.mp3`);
+    const winAudio = new Audio(`https://datit-026.github.io/Jper/sounds/tracks/win.mp3`);
     
     correctAudio.play().catch(err => console.log(err));
     setTimeout(() => {
@@ -552,7 +591,7 @@ function playerInput(character) {
             toggleButtons(false);
             setTimeout(playSequence, 1000);
         } else {
-            document.getElementById('current-vocab').firstElementChild.textContent = 'You Failed!';
+            document.getElementById('current-vocab').firstElementChild.textContent = 'You Failed! Aghhh! Is that you?';
             document.getElementById('current-vocab').firstElementChild.style.color = 'red';
             playWrongSound();
             
@@ -563,7 +602,7 @@ function playerInput(character) {
             }
             
             setTimeout(() => {
-                showFailedPopup("You failed the pattern challenge!");
+                showFailedPopup("You Failed! If you find this too difficult, just give up!");
             }, 1000);
         }
     } else if (playerSequence.length === sequenceToCheck.length) {
@@ -629,10 +668,15 @@ function updateUI() {
     document.getElementById('game-title').textContent = `Round ${currentRound}/3`;
 }
 
-// Clean up when leaving the game
 function cleanupGame() {
     if (gameTimer) {
         clearInterval(gameTimer);
         gameTimer = null;
+    }
+    
+    // Remove timer display container if it exists
+    const timerContainer = document.getElementById('timer-display-container');
+    if (timerContainer) {
+        timerContainer.remove();
     }
 }

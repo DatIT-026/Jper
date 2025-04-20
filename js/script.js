@@ -1,7 +1,7 @@
 let unlockedLevels = JSON.parse(localStorage.getItem('unlockedLevels')) || {
     hiragana: [1],
     katakana: [1], // Unlock Katakana Level 1 by default
-    boss: []
+    boss: [1]  // Unlock Boss Level 1 by default, but Level 2 needs to be unlocked by completing Level 1
 };
 
 const showLevels = (mode) => {
@@ -33,17 +33,28 @@ const showLevels = (mode) => {
         } else if (mode === 'katakana') {
             isLevelEnabled = unlockedLevels.katakana.includes(i);
         } else if (mode === 'boss') {
-            if (isHiraganaLevel9Unlocked && isKatakanaLevel9Unlocked) {
-                isLevelEnabled = unlockedLevels.boss.includes(i);
+            // For boss mode, check if level is in unlockedLevels.boss
+            isLevelEnabled = unlockedLevels.boss.includes(i);
+            
+            // Additional check for prerequisites for Boss level 1
+            if (i === 1 && (!isHiraganaLevel9Unlocked || !isKatakanaLevel9Unlocked)) {
+                isLevelEnabled = false;
             }
         }
 
         if (isLevelEnabled) {
             button.onclick = () => startLevel(mode, i);
+            
+            // Add active button styling for visual feedback
+            button.classList.add('active-level');
         } else {
             button.disabled = true;
-            if (mode === 'boss' && (!isHiraganaLevel9Unlocked || !isKatakanaLevel9Unlocked)) {
-                button.title = 'Complete Hiragana Level 9 and Katakana Level 9 to unlock Boss Fight levels';
+            if (mode === 'boss') {
+                if (i === 1 && (!isHiraganaLevel9Unlocked || !isKatakanaLevel9Unlocked)) {
+                    button.title = 'Complete Hiragana Level 9 and Katakana Level 9 to unlock Boss Fight levels';
+                } else if (i === 2) {
+                    button.title = 'Complete Boss Fight Level 1 to unlock this level';
+                }
             }
         }
         levelsList.appendChild(button);
@@ -51,6 +62,17 @@ const showLevels = (mode) => {
 };
 
 const backToMenu = () => {
+    // Reset any UI elements before going back to menu
+    if (document.getElementById('current-vocab') && document.getElementById('current-vocab').firstElementChild) {
+        document.getElementById('current-vocab').firstElementChild.textContent = '';
+        document.getElementById('current-vocab').firstElementChild.style.color = '#555';
+    }
+    
+    // Clean up any game resources
+    if (typeof cleanupGame === 'function') {
+        cleanupGame();
+    }
+    
     document.getElementById('levels-section').style.display = 'none';
     document.getElementById('game-section').style.display = 'none';
     document.querySelector('.menu').style.display = 'flex';
@@ -99,6 +121,9 @@ const startLevel = (mode, level) => {
         } else if (level === 9) {
             startKatakanaLevel9();
         }
+    } else if (mode === 'boss') {
+        if (level === 1) startBossLevel1();
+        if (level === 2) startBossLevel2();
     } else {
         alert(`Starting ${mode} Level ${level}! (Feature coming soon)`);
     }
@@ -110,6 +135,7 @@ const unlockLevel = (mode, level) => {
         // Save progress to localStorage
         localStorage.setItem('unlockedLevels', JSON.stringify(unlockedLevels));
 
+        // Unlock Boss level 1 when both Hiragana and Katakana level 8 are completed
         if (unlockedLevels.hiragana.includes(8) && unlockedLevels.katakana.includes(8) && !unlockedLevels.boss.includes(1)) {
             unlockedLevels.boss.push(1);
             localStorage.setItem('unlockedLevels', JSON.stringify(unlockedLevels));

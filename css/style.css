@@ -69,7 +69,7 @@ p {
     gap: 15px;
     margin-bottom: 20px;
     width: 100%;
-    max-width: 700px; /* Fits 5 buttons in a row */
+    max-width: 700px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -79,6 +79,11 @@ p {
 }
 
 .levels-list button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.game-buttons button:disabled {
     background-color: #cccccc;
     cursor: not-allowed;
 }
@@ -213,4 +218,108 @@ p {
     #current-romaji {
         font-size: 1.1em;
     }
+}
+
+.menu button, .levels-list button, .game-buttons button, button {
+    padding: 12px 24px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    background-color: #007bff;
+    color: white;
+    transition: background-color 0.3s, transform 0.1s, box-shadow 0.2s;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.menu button:hover, .levels-list button:hover, .game-buttons button:hover, button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.3);
+}
+
+.menu button:active, .levels-list button:active, .game-buttons button:active, button:active {
+    transform: translateY(1px) scale(0.98);
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
+    background-color: #004494;
+}
+
+/* Add a subtle ripple effect */
+.menu button::after, .levels-list button::after, .game-buttons button::after, button::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.3) 10%, transparent 10.01%);
+    background-repeat: no-repeat;
+    background-position: 50%;
+    transform: scale(10, 10);
+    opacity: 0;
+    transition: transform 0.4s, opacity 0.8s;
+}
+
+.menu button:active::after, .levels-list button:active::after, .game-buttons button:active::after, button:active::after {
+    transform: scale(0, 0);
+    opacity: 0.3;
+    transition: 0s;
+}
+
+/* Timer display styling */
+#timer-display {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+    margin: 10px 0;
+    padding: 8px 12px;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+/* Active level button */
+.active-level {
+    background-color: #28a745;
+}
+
+.active-level:hover {
+    background-color: #218838;
+}
+
+/* Additional game button styling for better feedback */
+.game-buttons button {
+    width: 70px;
+    height: 70px;
+    font-size: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    border-radius: 10px;
+    background-color: #1e90ff;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    margin: 8px;
+    user-select: none;
+}
+
+.game-buttons button:hover {
+    background-color: #187bcd;
+}
+
+.game-buttons button:active {
+    transform: scale(0.95);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.game-buttons button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
 }

@@ -37,7 +37,7 @@ const romajiMap = {
     'ら': 'ra', 'り': 'ri', 'る': 'ru', 'れ': 're', 'ろ': 'ro',
     'わ': 'wa', 'を': 'wo', 'ん': 'n',
 
-    'ア': 'a', 'イ': 'i', 'ウ': 'u', 'エ': 'e', 'オ': 'o',
+    'ア': 'a', 'イ': 'i', 'ウ': 'e', 'エ': 'e', 'オ': 'o',
     'カ': 'ka', 'キ': 'ki', 'ク': 'ku', 'ケ': 'ke', 'コ': 'ko',
     'サ': 'sa', 'シ': 'shi', 'ス': 'su', 'セ': 'se', 'ソ': 'so',
     'タ': 'ta', 'チ': 'chi', 'ツ': 'tsu', 'テ': 'te', 'ト': 'to',
@@ -113,6 +113,12 @@ function startBossLevel1() {
     // Stop background music when entering a level
     stopBackgroundMusic();
     
+    // Play boss fight background music
+    backgroundMusic = new Audio('https://datit-026.github.io/Jper/sounds/tracks/ppl2ost.mp3');
+    backgroundMusic.volume = 0.3;
+    backgroundMusic.loop = true; // Loop music during the boss fight
+    backgroundMusic.play().catch(err => console.log("Error playing boss fight music:", err));
+
     document.getElementById('levels-section').style.display = 'none';
     document.getElementById('game-section').style.display = 'block';
     document.getElementById('game-title').textContent = `Round ${currentRound}/3`;
@@ -451,7 +457,7 @@ function playSequence() {
     const sequenceToPlay = sequence.slice(0, currentTurn + 1); // Only play up to current turn + 1
     
     // Set the delay between characters - faster in the final round
-const delay = currentRound === 3 ? 500 : 1000; // Making round 3 twice as fast (x1)
+    const delay = currentRound === 3 ? 500 : 1000; // Making round 3 twice as fast (x1)
     
     document.getElementById('current-vocab').firstElementChild.textContent = '';
     const displayInterval = setInterval(() => {
@@ -521,7 +527,7 @@ function shuffleArray(array) {
     return array;
 }
 
-// Modified to include all characters from the full sequence and extra buttons in final round
+// Modified to ensure fixed number of buttons for each round to increase difficulty
 function setupGameButtons() {
     const gameButtons = document.getElementById('game-buttons');
     gameButtons.innerHTML = '';
@@ -529,9 +535,18 @@ function setupGameButtons() {
     // Use the full sequence for the buttons
     let uniqueChars = [...new Set(sequence)];
     
-    // Add extra buttons in the final round (total 6 buttons)
-    if (currentRound === 3 && uniqueChars.length < 6) {
-        const extraNeeded = 6 - uniqueChars.length;
+    // Define target number of buttons for each round
+    const targetButtonCounts = {
+        1: 4, // Round 1: 4 buttons (3 sequence + 1 extra)
+        2: 5, // Round 2: 5 buttons (4 sequence + 1 extra)
+        3: 6  // Round 3: 6 buttons (5 sequence + 1 extra)
+    };
+    
+    const targetCount = targetButtonCounts[currentRound];
+    
+    // Add extra buttons if needed to reach the target count
+    if (uniqueChars.length < targetCount) {
+        const extraNeeded = targetCount - uniqueChars.length;
         const extraChars = getExtraCharacters(extraNeeded);
         uniqueChars = [...uniqueChars, ...extraChars];
     }
@@ -674,6 +689,9 @@ function cleanupGame() {
         gameTimer = null;
     }
     
+    // Stop boss fight background music
+    stopBackgroundMusic();
+
     // Remove timer display container if it exists
     const timerContainer = document.getElementById('timer-display-container');
     if (timerContainer) {

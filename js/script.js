@@ -1,7 +1,7 @@
 let unlockedLevels = JSON.parse(localStorage.getItem('unlockedLevels')) || {
     hiragana: [1],
-    katakana: [1], // Unlock Katakana Level 1 by default
-    boss: [1]  // Unlock Boss Level 1 by default, but Level 2 needs to be unlocked by completing Level 1
+    katakana: [1],
+    boss: []
 };
 
 const showLevels = (mode) => {
@@ -78,6 +78,9 @@ const backToMenu = () => {
     document.querySelector('.menu').style.display = 'flex';
     document.querySelector('h2').style.display = 'block';
     document.querySelector('p').style.display = 'block';
+
+    // Restart menu background music
+    playMenuBackgroundMusic();
 };
 
 const startLevel = (mode, level) => {

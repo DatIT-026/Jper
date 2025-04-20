@@ -20,8 +20,60 @@ let usedRomaji = new Set(); // Tracking used romaji to avoid hiragana/katakana d
 let gameTimer = null;
 let timeRemaining = 120; // 120 seconds timer for level 1
 let timerDisplay = null;
+let backgroundMusicTimer = null;
+let backgroundMusic = null;
+
+// Initialize background music for menu
+(function initBackgroundMusic() {
+    // Function to play background music with 5 minute intervals
+    function playMenuBackgroundMusic() {
+        // Stop any existing background music
+        if (backgroundMusic && !backgroundMusic.paused) {
+            backgroundMusic.pause();
+            backgroundMusic.currentTime = 0;
+        }
+        
+        // Create new audio instance
+        backgroundMusic = new Audio('sounds/tracks/ppl2ost.mp3');
+        backgroundMusic.volume = 0.3;
+        
+        // Clear any existing timer
+        if (backgroundMusicTimer) {
+            clearTimeout(backgroundMusicTimer);
+        }
+        
+        // Play the music
+        backgroundMusic.play().catch(err => console.log("Error playing background music:", err));
+        
+        // Add ended event to schedule next play after 5 minutes
+        backgroundMusic.onended = function() {
+            // Schedule next play after 5 minutes (300,000 ms)
+            backgroundMusicTimer = setTimeout(() => {
+                playMenuBackgroundMusic();
+            }, 300000); 
+        };
+    }
+    
+    // Start playing background music when page loads
+    playMenuBackgroundMusic();
+})();
+
+// Function to stop background music
+function stopBackgroundMusic() {
+    if (backgroundMusic && !backgroundMusic.paused) {
+        backgroundMusic.pause();
+        backgroundMusic.currentTime = 0;
+    }
+    
+    if (backgroundMusicTimer) {
+        clearTimeout(backgroundMusicTimer);
+    }
+}
 
 function startBossLevel1() {
+    // Stop background music when entering a level
+    stopBackgroundMusic();
+    
     document.getElementById('levels-section').style.display = 'none';
     document.getElementById('game-section').style.display = 'block';
     document.getElementById('game-title').textContent = `Round ${currentRound}/3`;
@@ -52,24 +104,58 @@ function startBossLevel1() {
 
 function createTimerDisplay() {
     // Check if timer display already exists
-    if (!document.getElementById('timer-display')) {
-        timerDisplay = document.createElement('div');
-        timerDisplay.id = 'timer-display';
-        timerDisplay.style.fontSize = '1.2em';
-        timerDisplay.style.fontWeight = 'bold';
-        timerDisplay.style.color = '#333';
-        timerDisplay.style.margin = '10px 0';
-        timerDisplay.style.padding = '5px';
-        timerDisplay.style.borderRadius = '5px';
-        timerDisplay.style.backgroundColor = '#f0f0f0';
-        timerDisplay.textContent = `Time: ${timeRemaining}s`;
+    if (!document.getElementById('timer-display-container')) {
+        // Create outer container
+        const timerContainer = document.createElement('div');
+        timerContainer.id = 'timer-display-container';
+        timerContainer.style.margin = '10px 0';
+        timerContainer.style.width = '100%';
+        timerContainer.style.height = '40px';
+        timerContainer.style.position = 'relative';
+        timerContainer.style.backgroundColor = '#f0f0f0';
+        timerContainer.style.borderRadius = '6px';
+        timerContainer.style.overflow = 'hidden';
+        timerContainer.style.border = '1px solid #ddd';
+        
+        // Create progress bar (starts empty, will grow)
+        const progressBar = document.createElement('div');
+        progressBar.id = 'timer-progress-bar';
+        progressBar.style.height = '100%';
+        progressBar.style.width = '0%'; // Starts at 0% and grows
+        progressBar.style.backgroundColor = '#28a745'; // Green
+        progressBar.style.position = 'absolute';
+        progressBar.style.left = '0';
+        progressBar.style.top = '0';
+        progressBar.style.transition = 'width 1s linear';
+        progressBar.style.zIndex = '1';
+        
+        // Create text display that's always visible (positioned on top of progress bar)
+        const timerText = document.createElement('div');
+        timerText.id = 'timer-text';
+        timerText.style.position = 'absolute';
+        timerText.style.zIndex = '2';
+        timerText.style.width = '100%';
+        timerText.style.height = '100%';
+        timerText.style.display = 'flex';
+        timerText.style.justifyContent = 'center';
+        timerText.style.alignItems = 'center';
+        timerText.style.fontSize = '1.2em';
+        timerText.style.fontWeight = 'bold';
+        timerText.style.color = '#333';
+        timerText.textContent = `Time: ${timeRemaining}s`;
+        
+        // Assemble the components
+        timerContainer.appendChild(progressBar);
+        timerContainer.appendChild(timerText);
         
         // Insert timer before game buttons
         const gameButtons = document.getElementById('game-buttons');
-        gameButtons.parentNode.insertBefore(timerDisplay, gameButtons);
+        gameButtons.parentNode.insertBefore(timerContainer, gameButtons);
     } else {
-        timerDisplay = document.getElementById('timer-display');
-        timerDisplay.textContent = `Time: ${timeRemaining}s`;
+        // Reset existing timer elements
+        document.getElementById('timer-progress-bar').style.width = '0%';
+        document.getElementById('timer-progress-bar').style.backgroundColor = '#28a745';
+        document.getElementById('timer-text').textContent = `Time: ${timeRemaining}s`;
     }
 }
 
@@ -81,31 +167,184 @@ function startTimer() {
     
     // Reset time
     timeRemaining = 120;
-    timerDisplay.textContent = `Time: ${timeRemaining}s`;
+    const totalTime = timeRemaining;
+    
+    // Get references to timer elements
+    const progressBar = document.getElementById('timer-progress-bar');
+    const timerText = document.getElementById('timer-text');
+    
+    // Initialize display
+    progressBar.style.width = '0%';
+    progressBar.style.backgroundColor = '#28a745'; // Green
+    timerText.textContent = `Time: ${timeRemaining}s`;
     
     // Start new timer
     gameTimer = setInterval(() => {
         timeRemaining--;
         
-        // Update display
-        timerDisplay.textContent = `Time: ${timeRemaining}s`;
+        // Update text display
+        timerText.textContent = `Time: ${timeRemaining}s`;
+        
+        // Update progress bar - increasing from left to right
+        const percentElapsed = ((totalTime - timeRemaining) / totalTime) * 100;
+        progressBar.style.width = `${percentElapsed}%`;
         
         // Change color when time is running low
         if (timeRemaining <= 30) {
-            timerDisplay.style.color = 'red';
+            progressBar.style.backgroundColor = '#dc3545'; // Red
         }
         
         // Check if time is up
         if (timeRemaining <= 0) {
             clearInterval(gameTimer);
-            document.getElementById('current-vocab').firstElementChild.textContent = 'Time is up! You failed!';
+            document.getElementById('current-vocab').firstElementChild.textContent = 'Time is up!';
             document.getElementById('current-vocab').firstElementChild.style.color = 'red';
             playWrongSound();
-            setTimeout(() => {
-                backToMenu();
-            }, 2000);
+            showFailedPopup("Time Out!");
         }
     }, 1000);
+}
+
+// Create custom popup for failure
+function showFailedPopup(message) {
+    // Create the popup overlay
+    const popupOverlay = document.createElement('div');
+    popupOverlay.style.position = 'fixed';
+    popupOverlay.style.top = '0';
+    popupOverlay.style.left = '0';
+    popupOverlay.style.width = '100%';
+    popupOverlay.style.height = '100%';
+    popupOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+    popupOverlay.style.display = 'flex';
+    popupOverlay.style.justifyContent = 'center';
+    popupOverlay.style.alignItems = 'center';
+    popupOverlay.style.zIndex = '1000';
+    
+    // Create the popup content
+    const popupContent = document.createElement('div');
+    popupContent.style.backgroundColor = 'white';
+    popupContent.style.padding = '30px';
+    popupContent.style.borderRadius = '15px';
+    popupContent.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.3)';
+    popupContent.style.textAlign = 'center';
+    popupContent.style.maxWidth = '400px';
+    popupContent.style.width = '80%';
+    
+    // Create message
+    const popupTitle = document.createElement('h2');
+    popupTitle.textContent = 'You Failed!';
+    popupTitle.style.color = '#dc3545';
+    popupTitle.style.marginBottom = '15px';
+    
+    const popupMessage = document.createElement('p');
+    popupMessage.textContent = message || 'Try again to complete the level!';
+    popupMessage.style.fontSize = '18px';
+    popupMessage.style.marginBottom = '25px';
+    
+    // Create back to levels button
+    const backButton = document.createElement('button');
+    backButton.textContent = 'Return to Level Selection';
+    backButton.style.padding = '12px 24px';
+    backButton.style.fontSize = '16px';
+    backButton.style.backgroundColor = '#007bff';
+    backButton.style.color = 'white';
+    backButton.style.border = 'none';
+    backButton.style.borderRadius = '8px';
+    backButton.style.cursor = 'pointer';
+    backButton.style.transition = 'background-color 0.3s';
+    
+    backButton.addEventListener('mouseover', () => {
+        backButton.style.backgroundColor = '#0056b3';
+    });
+    
+    backButton.addEventListener('mouseout', () => {
+        backButton.style.backgroundColor = '#007bff';
+    });
+    
+    backButton.addEventListener('click', () => {
+        document.body.removeChild(popupOverlay);
+        backToMenu();
+    });
+    
+    // Assemble popup
+    popupContent.appendChild(popupTitle);
+    popupContent.appendChild(popupMessage);
+    popupContent.appendChild(backButton);
+    popupOverlay.appendChild(popupContent);
+    
+    // Add popup to body
+    document.body.appendChild(popupOverlay);
+}
+
+// Create custom popup for congratulations
+function showCongratulationsPopup() {
+    // Create the popup overlay
+    const popupOverlay = document.createElement('div');
+    popupOverlay.style.position = 'fixed';
+    popupOverlay.style.top = '0';
+    popupOverlay.style.left = '0';
+    popupOverlay.style.width = '100%';
+    popupOverlay.style.height = '100%';
+    popupOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+    popupOverlay.style.display = 'flex';
+    popupOverlay.style.justifyContent = 'center';
+    popupOverlay.style.alignItems = 'center';
+    popupOverlay.style.zIndex = '1000';
+    
+    // Create the popup content
+    const popupContent = document.createElement('div');
+    popupContent.style.backgroundColor = 'white';
+    popupContent.style.padding = '30px';
+    popupContent.style.borderRadius = '15px';
+    popupContent.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.3)';
+    popupContent.style.textAlign = 'center';
+    popupContent.style.maxWidth = '400px';
+    popupContent.style.width = '80%';
+    
+    // Create congratulations message
+    const popupTitle = document.createElement('h2');
+    popupTitle.textContent = 'Congratulations!';
+    popupTitle.style.color = '#28a745';
+    popupTitle.style.marginBottom = '15px';
+    
+    const popupMessage = document.createElement('p');
+    popupMessage.textContent = 'You have successfully completed Boss Level 1!';
+    popupMessage.style.fontSize = '18px';
+    popupMessage.style.marginBottom = '25px';
+    
+    // Create back to levels button
+    const backButton = document.createElement('button');
+    backButton.textContent = 'Return to Level Selection';
+    backButton.style.padding = '12px 24px';
+    backButton.style.fontSize = '16px';
+    backButton.style.backgroundColor = '#007bff';
+    backButton.style.color = 'white';
+    backButton.style.border = 'none';
+    backButton.style.borderRadius = '8px';
+    backButton.style.cursor = 'pointer';
+    backButton.style.transition = 'background-color 0.3s';
+    
+    backButton.addEventListener('mouseover', () => {
+        backButton.style.backgroundColor = '#0056b3';
+    });
+    
+    backButton.addEventListener('mouseout', () => {
+        backButton.style.backgroundColor = '#007bff';
+    });
+    
+    backButton.addEventListener('click', () => {
+        document.body.removeChild(popupOverlay);
+        backToMenu();
+    });
+    
+    // Assemble popup
+    popupContent.appendChild(popupTitle);
+    popupContent.appendChild(popupMessage);
+    popupContent.appendChild(backButton);
+    popupOverlay.appendChild(popupContent);
+    
+    // Add popup to body
+    document.body.appendChild(popupOverlay);
 }
 
 function resetGame() {
@@ -313,7 +552,7 @@ function playerInput(character) {
             toggleButtons(false);
             setTimeout(playSequence, 1000);
         } else {
-            document.getElementById('current-vocab').firstElementChild.textContent = 'You failed';
+            document.getElementById('current-vocab').firstElementChild.textContent = 'You Failed!';
             document.getElementById('current-vocab').firstElementChild.style.color = 'red';
             playWrongSound();
             
@@ -324,8 +563,8 @@ function playerInput(character) {
             }
             
             setTimeout(() => {
-                backToMenu();
-            }, 2000);
+                showFailedPopup("You failed the pattern challenge!");
+            }, 1000);
         }
     } else if (playerSequence.length === sequenceToCheck.length) {
         retryCount = 0;
@@ -339,13 +578,15 @@ function playerInput(character) {
                     gameTimer = null;
                 }
                 
-                document.getElementById('current-vocab').firstElementChild.textContent = `Congratulations! You defeated the Boss!`;
+                document.getElementById('current-vocab').firstElementChild.textContent = `Completed!`;
                 document.getElementById('current-vocab').firstElementChild.style.color = 'green';
                 playWinSound(); // Already plays both sounds
                 unlockLevel('boss', 2);
+                
+                // Show the custom congratulations popup
                 setTimeout(() => {
-                    backToMenu();
-                }, 2000);
+                    showCongratulationsPopup();
+                }, 1500);
                 return;
             }
             

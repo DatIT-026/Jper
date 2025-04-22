@@ -14,9 +14,9 @@ const showLevels = (mode) => {
     document.querySelector('p').style.display = 'none';
     levelsSection.style.display = 'block';
 
-    modeTitle.textContent = mode === 'hiragana' ? 'Hiragana Levels' : mode === 'katakana' ? 'Katakana Levels' : 'Boss Fight Levels';
+    modeTitle.textContent = mode === 'hiragana' ? 'Hiragana Levels' : mode === 'katakana' ? 'Katakana Levels' : 'Jper Level';
 
-    const numLevels = mode === 'boss' ? 2 : 9; // 9 levels for Hiragana and Katakana, 2 for Boss
+    const numLevels = mode === 'boss' ? 1 : 9; // 9 levels for Hiragana and Katakana, 1 for Boss
     levelsList.innerHTML = '';
 
     const isHiraganaLevel9Unlocked = unlockedLevels.hiragana.includes(9);
@@ -51,9 +51,7 @@ const showLevels = (mode) => {
             button.disabled = true;
             if (mode === 'boss') {
                 if (i === 1 && (!isHiraganaLevel9Unlocked || !isKatakanaLevel9Unlocked)) {
-                    button.title = 'Complete Hiragana Level 9 and Katakana Level 9 to unlock Boss Fight levels';
-                } else if (i === 2) {
-                    button.title = 'Complete Boss Fight Level 1 to unlock this level';
+                    button.title = 'Complete Hiragana Level 9 and Katakana Level 9 to unlock Jper Level';
                 }
             }
         }
@@ -78,9 +76,6 @@ const backToMenu = () => {
     document.querySelector('.menu').style.display = 'flex';
     document.querySelector('h2').style.display = 'block';
     document.querySelector('p').style.display = 'block';
-
-    // Restart menu background music
-    playMenuBackgroundMusic();
 };
 
 const startLevel = (mode, level) => {
@@ -126,7 +121,6 @@ const startLevel = (mode, level) => {
         }
     } else if (mode === 'boss') {
         if (level === 1) startBossLevel1();
-        if (level === 2) startBossLevel2();
     } else {
         alert(`Starting ${mode} Level ${level}! (Feature coming soon)`);
     }

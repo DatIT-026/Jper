@@ -37,7 +37,7 @@ const romajiMap = {
     'ら': 'ra', 'り': 'ri', 'る': 'ru', 'れ': 're', 'ろ': 'ro',
     'わ': 'wa', 'を': 'wo', 'ん': 'n',
 
-    'ア': 'a', 'イ': 'i', 'ウ': 'e', 'エ': 'e', 'オ': 'o',
+    'ア': 'a', 'イ': 'i', 'ウ': 'u', 'エ': 'e', 'オ': 'o',
     'カ': 'ka', 'キ': 'ki', 'ク': 'ku', 'ケ': 'ke', 'コ': 'ko',
     'サ': 'sa', 'シ': 'shi', 'ス': 'su', 'セ': 'se', 'ソ': 'so',
     'タ': 'ta', 'チ': 'chi', 'ツ': 'tsu', 'テ': 'te', 'ト': 'to',
@@ -48,54 +48,20 @@ const romajiMap = {
     'ラ': 'ra', 'リ': 'ri', 'ル': 'ru', 'レ': 're', 'ロ': 'ro',
     'ワ': 'wa', 'ヲ': 'wo', 'ン': 'n'
 };
+
 let sequence = [];
 let playerSequence = [];
 let currentRound = 1;
-let turnsPerRound = [3, 4, 5];
+let turnsPerRound = [3, 4, 5, 6, 7];
 let retryCount = 0;
 let currentTurn = 0;
 let isPlayerTurn = false;
 let usedRomaji = new Set(); // Tracking used romaji to avoid hiragana/katakana duplication
 let gameTimer = null;
-let timeRemaining = 90; // 90 seconds timer for level 1
+let timeRemaining = 10; // 90 seconds timer for level 1
 let timerDisplay = null;
 let backgroundMusicTimer = null;
 let backgroundMusic = null;
-
-// Initialize background music for menu
-(function initBackgroundMusic() {
-    // Function to play background music with 5 minute intervals
-    function playMenuBackgroundMusic() {
-        // Stop any existing background music
-        if (backgroundMusic && !backgroundMusic.paused) {
-            backgroundMusic.pause();
-            backgroundMusic.currentTime = 0;
-        }
-        
-        // Create new audio instance
-        backgroundMusic = new Audio('https://datit-026.github.io/Jper/sounds/tracks/ppl2ost.mp3');
-        backgroundMusic.volume = 0.3;
-        
-        // Clear any existing timer
-        if (backgroundMusicTimer) {
-            clearTimeout(backgroundMusicTimer);
-        }
-        
-        // Play the music
-        backgroundMusic.play().catch(err => console.log("Error playing background music:", err));
-        
-        // Add ended event to schedule next play after 5 minutes
-        backgroundMusic.onended = function() {
-            // Schedule next play after 5 minutes (300,000 ms)
-            backgroundMusicTimer = setTimeout(() => {
-                playMenuBackgroundMusic();
-            }, 300000); 
-        };
-    }
-    
-    // Start playing background music when page loads
-    playMenuBackgroundMusic();
-})();
 
 // Function to stop background music
 function stopBackgroundMusic() {
@@ -107,6 +73,16 @@ function stopBackgroundMusic() {
     if (backgroundMusicTimer) {
         clearTimeout(backgroundMusicTimer);
     }
+}
+
+// Function to stop all audio
+function stopAllAudio() {
+    stopBackgroundMusic();
+    const allAudio = document.querySelectorAll('audio');
+    allAudio.forEach(audio => {
+        audio.pause();
+        audio.currentTime = 0;
+    });
 }
 
 function startBossLevel1() {
@@ -121,7 +97,7 @@ function startBossLevel1() {
 
     document.getElementById('levels-section').style.display = 'none';
     document.getElementById('game-section').style.display = 'block';
-    document.getElementById('game-title').textContent = `Round ${currentRound}/3`;
+    document.getElementById('game-title').textContent = `Round ${currentRound}/5`;
     document.getElementById('current-vocab').style.display = 'block';
     document.getElementById('current-romaji').style.display = 'none';
     document.getElementById('replay-button').style.display = 'none';
@@ -211,7 +187,7 @@ function startTimer() {
     }
     
     // Reset time
-    timeRemaining = 90;
+    timeRemaining = 10;
     const totalTime = timeRemaining;
     
     // Get references to timer elements
@@ -252,6 +228,15 @@ function startTimer() {
 
 // Create custom popup for failure
 function showFailedPopup(message) {
+    // Stop all audio
+    stopAllAudio();
+    
+    // Hide romaji
+    document.getElementById('current-vocab').style.display = 'none';
+    
+    // Disable buttons
+    toggleButtons(false);
+    
     // Create the popup overlay
     const popupOverlay = document.createElement('div');
     popupOverlay.style.position = 'fixed';
@@ -323,6 +308,15 @@ function showFailedPopup(message) {
 
 // Create custom popup for congratulations
 function showCongratulationsPopup() {
+    // Stop all audio
+    stopAllAudio();
+    
+    // Hide romaji
+    document.getElementById('current-vocab').style.display = 'none';
+    
+    // Disable buttons
+    toggleButtons(false);
+    
     // Create the popup overlay
     const popupOverlay = document.createElement('div');
     popupOverlay.style.position = 'fixed';
@@ -451,13 +445,13 @@ function generateSequence() {
     }
 }
 
-// Modified to play sequence up to the current turn with faster timing in the final round
+// Modified to play sequence up to the current turn with faster timing in later rounds
 function playSequence() {
     let index = 0;
     const sequenceToPlay = sequence.slice(0, currentTurn + 1); // Only play up to current turn + 1
     
-    // Set the delay between characters - faster in the final round
-    const delay = currentRound === 3 ? 500 : 1000; // Making round 3 twice as fast (x1)
+    // Set the delay between characters - faster in rounds 3, 4, and 5
+    const delay = currentRound >= 3 ? 500 : 1000;
     
     document.getElementById('current-vocab').firstElementChild.textContent = '';
     const displayInterval = setInterval(() => {
@@ -539,7 +533,9 @@ function setupGameButtons() {
     const targetButtonCounts = {
         1: 4, // Round 1: 4 buttons (3 sequence + 1 extra)
         2: 5, // Round 2: 5 buttons (4 sequence + 1 extra)
-        3: 6  // Round 3: 6 buttons (5 sequence + 1 extra)
+        3: 6, // Round 3: 6 buttons (5 sequence + 1 extra)
+        4: 7, // Round 4: 7 buttons (6 sequence + 1 extra)
+        5: 8  // Round 5: 8 buttons (7 sequence + 1 extra)
     };
     
     const targetCount = targetButtonCounts[currentRound];
@@ -625,7 +621,7 @@ function playerInput(character) {
         
         // If we've completed the full sequence for this round
         if (currentTurn + 1 >= turnsPerRound[currentRound - 1]) {
-            if (currentRound === 3) {
+            if (currentRound === 5) {
                 // Clear the timer
                 if (gameTimer) {
                     clearInterval(gameTimer);
@@ -635,7 +631,6 @@ function playerInput(character) {
                 document.getElementById('current-vocab').firstElementChild.textContent = `Completed!`;
                 document.getElementById('current-vocab').firstElementChild.style.color = 'green';
                 playWinSound(); // Already plays both sounds
-                unlockLevel('boss', 2);
                 
                 // Show the custom congratulations popup
                 setTimeout(() => {
@@ -651,7 +646,7 @@ function playerInput(character) {
             currentRound++;
             currentTurn = 0;
             setTimeout(() => {
-                document.getElementById('game-title').textContent = `Round ${currentRound}/3`;
+                document.getElementById('game-title').textContent = `Round ${currentRound}/5`;
                 playerSequence = [];
                 isPlayerTurn = false;
                 toggleButtons(false);
@@ -671,7 +666,7 @@ function playerInput(character) {
             isPlayerTurn = false;
             toggleButtons(false);
             setTimeout(() => {
-                document.getElementById('game-title').textContent = `Round ${currentRound}/3`;
+                document.getElementById('game-title').textContent = `Round ${currentRound}/5`;
                 playSequence(); // Play the next part of the sequence
             }, 1000);
         }
@@ -680,7 +675,7 @@ function playerInput(character) {
 }
 
 function updateUI() {
-    document.getElementById('game-title').textContent = `Round ${currentRound}/3`;
+    document.getElementById('game-title').textContent = `Round ${currentRound}/5`;
 }
 
 function cleanupGame() {

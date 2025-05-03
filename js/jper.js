@@ -58,7 +58,7 @@ let currentTurn = 0;
 let isPlayerTurn = false;
 let usedRomaji = new Set(); // Tracking used romaji to avoid hiragana/katakana duplication
 let gameTimer = null;
-let timeRemaining = 10; // 90 seconds timer for level 1
+let timeRemaining = 150; // 150 seconds timer
 let timerDisplay = null;
 let backgroundMusicTimer = null;
 let backgroundMusic = null;
@@ -187,7 +187,7 @@ function startTimer() {
     }
     
     // Reset time
-    timeRemaining = 10;
+    timeRemaining = 150;
     const totalTime = timeRemaining;
     
     // Get references to timer elements
@@ -531,11 +531,11 @@ function setupGameButtons() {
     
     // Define target number of buttons for each round
     const targetButtonCounts = {
-        1: 4, // Round 1: 4 buttons (3 sequence + 1 extra)
-        2: 5, // Round 2: 5 buttons (4 sequence + 1 extra)
-        3: 6, // Round 3: 6 buttons (5 sequence + 1 extra)
-        4: 7, // Round 4: 7 buttons (6 sequence + 1 extra)
-        5: 8  // Round 5: 8 buttons (7 sequence + 1 extra)
+        1: 4, // Round 1
+        2: 5, 
+        3: 6, 
+        4: 7, 
+        5: 8  
     };
     
     const targetCount = targetButtonCounts[currentRound];

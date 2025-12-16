@@ -129,13 +129,61 @@ const startLevel = (mode, level) => {
 const unlockLevel = (mode, level) => {
     if (!unlockedLevels[mode].includes(level)) {
         unlockedLevels[mode].push(level);
-        // Save progress to localStorage
         localStorage.setItem('unlockedLevels', JSON.stringify(unlockedLevels));
 
-        // Unlock Boss level 1 when both Hiragana and Katakana level 8 are completed
         if (unlockedLevels.hiragana.includes(8) && unlockedLevels.katakana.includes(8) && !unlockedLevels.boss.includes(1)) {
             unlockedLevels.boss.push(1);
             localStorage.setItem('unlockedLevels', JSON.stringify(unlockedLevels));
         }
     }
 };
+
+
+
+
+const isFullUnlocked = () => {
+    const data = JSON.parse(localStorage.getItem('unlockedLevels')) || { hiragana: [], katakana: [], boss: [] };
+    return data.boss.includes(1) && data.hiragana.includes(9) && data.katakana.includes(9);
+};
+
+const updateToggleButton = () => {
+    const btn = document.getElementById('toggle-level-btn');
+    if (!btn) return;
+
+    if (isFullUnlocked()) {
+        btn.innerHTML = '<span class="btn-icon">🔒</span> Lock All (Reset)';
+        btn.style.color = '#cc0000';
+    } else {
+        btn.innerHTML = '<span class="btn-icon">💡</span> Unlock All Levels';
+        btn.style.color = '#000';
+    }
+};
+
+const toggleGameStatus = () => {
+    if (isFullUnlocked()) {
+        if (confirm("⚠️ RESET GAME: Are you sure you want to lock all levels and start over?")) {
+            const defaultLevels = {
+                hiragana: [1],
+                katakana: [1],
+                boss: []
+            };
+            localStorage.setItem('unlockedLevels', JSON.stringify(defaultLevels));
+            localStorage.removeItem('maxLevel'); 
+            alert("Reset complete! Game will reload...");
+            location.reload();
+        }
+    } else {
+        const allLevelsUnlocked = {
+            hiragana: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            katakana: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            boss: [1]
+        };
+        localStorage.setItem('unlockedLevels', JSON.stringify(allLevelsUnlocked));
+        alert("All levels unlocked! Reloading...");
+        location.reload();
+    }
+};
+
+updateToggleButton();
+
+window.addEventListener('load', updateToggleButton);

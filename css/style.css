@@ -323,3 +323,42 @@ p {
     transform: none;
     box-shadow: none;
 }
+
+
+.dev-controls {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px dashed #ccc;
+    text-align: center;
+}
+
+.dev-buttons-container {
+    display: flex;
+    justify-content: center;
+}
+
+.retro-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 20px;
+    background-color: #c0c0c0;
+    color: #000;
+    font-family: "MS Sans Serif", "Tahoma", sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    border: 2px solid;
+    border-color: #ffffff #808080 #808080 #ffffff;
+    cursor: pointer;
+    outline: none;
+    box-shadow: 1px 1px 0px #000;
+    min-width: 160px;
+}
+
+.retro-btn:active {
+    border-color: #808080 #ffffff #ffffff #808080;
+    transform: translate(1px, 1px);
+    box-shadow: none;
+}
+
+.btn-icon { font-size: 16px; margin-right: 8px; }

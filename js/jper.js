@@ -90,7 +90,7 @@ function startBossLevel1() {
     stopBackgroundMusic();
     
     // Play boss fight background music
-    backgroundMusic = new Audio('https://datit-026.github.io/Jper/sounds/tracks/ppl2ost.mp3');
+    backgroundMusic = new Audio('sounds/tracks/ppl2ost.mp3');
     backgroundMusic.volume = 0.3;
     backgroundMusic.loop = true; // Loop music during the boss fight
     backgroundMusic.play().catch(err => console.log("Error playing boss fight music:", err));
@@ -472,29 +472,29 @@ function playSequence() {
 
 function playSound(character) {
     const romaji = romajiMap[character];
-    const audio = new Audio(`https://datit-026.github.io/Jper/sounds/vocals/special/${romaji}.mp3`);
+    const audio = new Audio(`sounds/vocals/special/${romaji}.mp3`);
     audio.play().catch(err => console.log(err));
 }
 
 function playRoundSound() {
-    const audio = new Audio(`https://datit-026.github.io/Jper/sounds/tracks/round${currentRound}.mp3`);
+    const audio = new Audio(`sounds/tracks/round${currentRound}.mp3`);
     audio.play().catch(err => console.log(err));
 }
 
 function playCorrectSound() {
-    const audio = new Audio(`https://datit-026.github.io/Jper/sounds/tracks/correctpattern.mp3`);
+    const audio = new Audio(`sounds/tracks/correctpattern.mp3`);
     audio.play().catch(err => console.log(err));
 }
 
 function playWrongSound() {
-    const audio = new Audio(`https://datit-026.github.io/Jper/sounds/tracks/wrongpattern.mp3`);
+    const audio = new Audio(`sounds/tracks/wrongpattern.mp3`);
     audio.play().catch(err => console.log(err));
 }
 
 // Modified to play both win.mp3 and correctpattern.mp3
 function playWinSound() {
-    const correctAudio = new Audio(`https://datit-026.github.io/Jper/sounds/tracks/correctpattern.mp3`);
-    const winAudio = new Audio(`https://datit-026.github.io/Jper/sounds/tracks/win.mp3`);
+    const correctAudio = new Audio(`sounds/tracks/correctpattern.mp3`);
+    const winAudio = new Audio(`sounds/tracks/win.mp3`);
     
     correctAudio.play().catch(err => console.log(err));
     setTimeout(() => {
@@ -504,8 +504,8 @@ function playWinSound() {
 
 // New function to play both sounds at round completion
 function playRoundCompleteSound() {
-    const correctAudio = new Audio(`https://datit-026.github.io/Jper/sounds/tracks/correctpattern.mp3`);
-    const winAudio = new Audio(`https://datit-026.github.io/Jper/sounds/tracks/win.mp3`);
+    const correctAudio = new Audio(`sounds/tracks/correctpattern.mp3`);
+    const winAudio = new Audio(`sounds/tracks/win.mp3`);
     
     correctAudio.play().catch(err => console.log(err));
     setTimeout(() => {
